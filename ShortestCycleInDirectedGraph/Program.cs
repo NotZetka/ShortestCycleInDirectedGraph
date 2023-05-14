@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace MyApp
 {
@@ -66,6 +68,7 @@ namespace MyApp
                 new int[] { 0, 2 }
             };
             ShortestCycle(successorsList);
+            Console.ReadKey();
         }
     }
 }
