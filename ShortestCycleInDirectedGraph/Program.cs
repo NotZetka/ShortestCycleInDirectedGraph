@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyApp
 {
-
     internal class Program
     {
         public static void ShortestCycle(List<int[]> successorsList)
@@ -59,7 +59,30 @@ namespace MyApp
         }
         static void Main(string[] args)
         {
-            List<int[]> successorsList = new()
+
+            List<int[]> successorsList = new List<int[]>();
+
+            Console.Write("Podaj liczbe wierzcholkow: ");
+            int size = Convert.ToInt32(Console.ReadLine());
+
+            for (int i = 0; i < size; i++)
+            {
+                Console.Write("Podaj numery wierzcholkow (oddzielone spacja) sasiadow wierzcholka " + i + ": ");
+                String input = Console.ReadLine();
+
+                int[] neighbours = string.IsNullOrWhiteSpace(input)
+                    ? Array.Empty<int>()
+                    : input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                           .Select(int.Parse)
+                           .Where(num => num < 5)
+                           .ToArray();
+
+                successorsList.Add(neighbours);
+            }
+
+            
+            
+            List<int[]> successorsList2 = new()
             {
                 new int[] { 1 },
                 new int[] { },
@@ -67,6 +90,8 @@ namespace MyApp
                 new int[] { 4 },
                 new int[] { 0, 2 }
             };
+            
+
             ShortestCycle(successorsList);
             Console.ReadKey();
         }
