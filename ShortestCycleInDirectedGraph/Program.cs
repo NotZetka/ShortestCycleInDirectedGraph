@@ -74,7 +74,7 @@ namespace MyApp
                     ? Array.Empty<int>()
                     : input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                            .Select(int.Parse)
-                           .Where(num => num < 5)
+                           .Where(num => num < size)
                            .ToArray();
 
                 successorsList.Add(neighbours);
