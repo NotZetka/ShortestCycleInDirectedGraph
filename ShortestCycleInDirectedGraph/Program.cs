@@ -59,9 +59,8 @@ namespace MyApp
         }
         static void Main(string[] args)
         {
-
+            Console.Write("Witaj w programie znajdowania najkrótszego cyklu w grafie skierowanym!");
             List<int[]> successorsList = new List<int[]>();
-
             Console.Write("Podaj liczbe wierzcholkow: ");
             int size = Convert.ToInt32(Console.ReadLine());
 
@@ -79,8 +78,6 @@ namespace MyApp
 
                 successorsList.Add(neighbours);
             }
-
-            
             
             List<int[]> successorsList2 = new()
             {
@@ -90,7 +87,6 @@ namespace MyApp
                 new int[] { 4 },
                 new int[] { 0, 2 }
             };
-            
 
             ShortestCycle(successorsList);
             Console.ReadKey();
