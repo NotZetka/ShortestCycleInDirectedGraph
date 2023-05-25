@@ -7,7 +7,7 @@ namespace MyApp
 {
     internal class Program
     {
-        public static void ShortestCycle(List<int[]> successorsList)
+        public static void ShortestCycle(List<List<int>> successorsList)
         {
             string result = null;
             int shortest = int.MaxValue;
@@ -18,7 +18,7 @@ namespace MyApp
                 List<int> cycle = new() { i };
                 helper(successorsList[i], visited, cycle);
             }
-            void helper(int[] successors, bool[] visited, List<int> cycle)
+            void helper(List<int> successors, bool[] visited, List<int> cycle)
             {
                 foreach (var successor in successors)
                 {
@@ -89,13 +89,13 @@ namespace MyApp
 
         public static void Example()
         {
-            List<int[]> successorsList2 = new()
+            List<List<int>> successorsList2 = new()
             {
-                new int[] { 1 },
-                new int[] { },
-                new int[] { 1, 3 },
-                new int[] { 4 },
-                new int[] { 0, 2 }
+                new () { 1 },
+                new () { },
+                new () { 1, 3 },
+                new () { 4 },
+                new () { 0, 2 }
             };
 
             Console.WriteLine("\nPrzykładowy graf: \n Liczba wierzchołków: 5");
@@ -118,7 +118,7 @@ namespace MyApp
 
         public static void NewGraph()
         {
-            List<int[]> successorsList = new List<int[]>();
+            var successorsList = new List<List<int>>();
             Console.Write("Podaj liczbę wierzchołków: ");
             int size = Convert.ToInt32(Console.ReadLine());
 
@@ -132,12 +132,16 @@ namespace MyApp
                     Console.Write("Podaj numery następców wierzchołka " + i + " (oddzielone spacją): ");
                     input = Console.ReadLine();
                 }
-                int[] neighbours = string.IsNullOrWhiteSpace(input)
-                    ? Array.Empty<int>()
-                    : input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                           .Select(int.Parse)
-                           .Where(num => num < size)
-                           .ToArray();
+                
+                var neighbours = input.Split(" ").Select(x => Convert.ToInt32(x)).ToList();
+                var didExceedLimit = neighbours.Where(x => x >= size).Count();
+                while(didExceedLimit > 0)
+                {
+                    Console.WriteLine("Podano nie istniejący wierzchołek. Spróbuj ponownie.");
+                    input = Console.ReadLine();
+                    neighbours = input.Split(" ").Select(x => Convert.ToInt32(x)).ToList();
+                    didExceedLimit = neighbours.Where(x => x >= size).Count();
+                }
 
                 successorsList.Add(neighbours);
             }
