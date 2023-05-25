@@ -133,7 +133,7 @@ namespace MyApp
                     input = Console.ReadLine();
                 }
                 
-                var neighbours = input.Split(" ").Select(x => Convert.ToInt32(x)).ToList();
+                var neighbours = input == "" ? new List<int>() : input.Split(" ").Select(x => Convert.ToInt32(x)).ToList();
                 var didExceedLimit = neighbours.Where(x => x >= size).Count();
                 while(didExceedLimit > 0)
                 {
