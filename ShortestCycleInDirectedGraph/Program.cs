@@ -105,7 +105,7 @@ namespace MyApp
             
             for (int i = 0; i < successorsList2.Count; i++)
             {
-                Console.Write(" Sąsiedzi wierzchołka " + i + ":");
+                Console.Write(" Następcy wierzchołka " + i + ":");
                 foreach(int element in successorsList2[i])
                 {
                     Console.Write(" "+element);
@@ -127,7 +127,7 @@ namespace MyApp
 
             for (int i = 0; i < size; i++)
             {
-                Console.Write("Podaj numery wierzchołków sąsiadujących z " + i + " (oddzielone spacją): ");
+                Console.Write("Podaj numery następców wierzchołka " + i + " (oddzielone spacją): ");
                 String input = Console.ReadLine();
 
                 int[] neighbours = string.IsNullOrWhiteSpace(input)
@@ -141,7 +141,10 @@ namespace MyApp
             }
 
             ShortestCycle(successorsList);
+            Console.WriteLine("\nNaciśnij dowolny przycisk, aby wrócić do menu...");
             Console.ReadKey();
+            Console.Clear();
+            MainMenu();
 
         }
         static void Main(string[] args)
