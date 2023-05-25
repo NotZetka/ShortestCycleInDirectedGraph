@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MyApp
 {
@@ -42,8 +45,8 @@ namespace MyApp
             }
             if(result != null)
             {
-                Console.WriteLine(shortest);
-                Console.WriteLine(result);
+                Console.WriteLine("Najkórtszy cykl ma długość: "+shortest);
+                Console.WriteLine("Kolejne wierzchołki w cyklu: "+result);
             }
         }
         public static string CycleToString(List<int> cycle)
@@ -57,16 +60,74 @@ namespace MyApp
             }
             return sb.ToString();
         }
-        static void Main(string[] args)
+        
+        public static void MainMenu()
         {
-            Console.Write("Witaj w programie znajdowania najkrótszego cyklu w grafie skierowanym!");
+            Console.WriteLine("Wybierz opcję, wpisując odpowiadający jej numer: \n 1. Stwórz nowy graf \n 2. Załaduj przykładowy graf \n 3. Wyjdź z programu ");
+            var s = Convert.ToInt32(Console.ReadKey(true).KeyChar)-48;
+            var _continue = true;
+            while (_continue)
+            {
+                _continue = false;
+                switch (s)
+                {
+                    case 1:
+                        Console.Clear();
+                        NewGraph();
+                        break;
+                    case 2:
+                        Console.Clear();
+                        Example();
+                        break;
+                    case 3:
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        _continue = true;
+                        Console.WriteLine("Wybierz poprawny numer opcji.");
+                        break;
+                }
+            }
+        }
+
+        public static void Example()
+        {
+            List<int[]> successorsList2 = new()
+            {
+                new int[] { 1 },
+                new int[] { },
+                new int[] { 1, 3 },
+                new int[] { 4 },
+                new int[] { 0, 2 }
+            };
+
+            Console.WriteLine("\nPrzykładowy graf: \n Liczba wierzchołków: 5");
+            
+            for (int i = 0; i < successorsList2.Count; i++)
+            {
+                Console.Write(" Sąsiedzi wierzchołka " + i + ":");
+                foreach(int element in successorsList2[i])
+                {
+                    Console.Write(" "+element);
+                }
+                Console.WriteLine();
+            }
+            ShortestCycle(successorsList2);
+            Console.WriteLine("\nNaciśnij dowolny przycisk, aby wrócić do menu...");
+            Console.ReadKey();
+            Console.Clear();
+            MainMenu();
+        }
+
+        public static void NewGraph()
+        {
             List<int[]> successorsList = new List<int[]>();
-            Console.Write("Podaj liczbe wierzcholkow: ");
+            Console.WriteLine("Podaj liczbę wierzchołków: ");
             int size = Convert.ToInt32(Console.ReadLine());
 
             for (int i = 0; i < size; i++)
             {
-                Console.Write("Podaj numery wierzcholkow (oddzielone spacja) sasiadow wierzcholka " + i + ": ");
+                Console.Write("Podaj numery wierzchołków sąsiadujących z " + i + " (oddzielone spacją): ");
                 String input = Console.ReadLine();
 
                 int[] neighbours = string.IsNullOrWhiteSpace(input)
@@ -78,17 +139,16 @@ namespace MyApp
 
                 successorsList.Add(neighbours);
             }
-            
-            List<int[]> successorsList2 = new()
-            {
-                new int[] { 1 },
-                new int[] { },
-                new int[] { 1, 3 },
-                new int[] { 4 },
-                new int[] { 0, 2 }
-            };
 
             ShortestCycle(successorsList);
+            Console.ReadKey();
+
+        }
+        static void Main(string[] args)
+        {
+            ConsoleHelper.SetCurrentFont("Consolas", 25);
+            Console.WriteLine("Witaj w programie znajdowania najkrótszego cyklu w grafie skierowanym!");
+            MainMenu();
             Console.ReadKey();
         }
     }
