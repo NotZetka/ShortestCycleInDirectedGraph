@@ -119,14 +119,19 @@ namespace MyApp
         public static void NewGraph()
         {
             List<int[]> successorsList = new List<int[]>();
-            Console.WriteLine("Podaj liczbę wierzchołków: ");
+            Console.Write("Podaj liczbę wierzchołków: ");
             int size = Convert.ToInt32(Console.ReadLine());
 
             for (int i = 0; i < size; i++)
             {
                 Console.Write("Podaj numery następców wierzchołka " + i + " (oddzielone spacją): ");
                 String input = Console.ReadLine();
-
+                while(input.Contains(Convert.ToString(i)))
+                {
+                    Console.WriteLine("Nie można tworzyć pętli, podaj wierzchołki ponownie.");
+                    Console.Write("Podaj numery następców wierzchołka " + i + " (oddzielone spacją): ");
+                    input = Console.ReadLine();
+                }
                 int[] neighbours = string.IsNullOrWhiteSpace(input)
                     ? Array.Empty<int>()
                     : input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
