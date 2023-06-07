@@ -45,6 +45,10 @@ namespace MyApp
                 Console.WriteLine("Najkórtszy cykl ma długość: "+shortest);
                 Console.WriteLine("Kolejne wierzchołki w cyklu: "+result);
             }
+            else
+            {
+                Console.WriteLine("Brak cyklu w grafie");
+            }
         }
         public static string CycleToString(List<int> cycle)
         {
@@ -60,7 +64,7 @@ namespace MyApp
         
         public static void MainMenu()
         {
-            Console.WriteLine("Wybierz opcję, wpisując odpowiadający jej numer: \n 1. Stwórz nowy graf \n 2. Załaduj przykładowy graf \n 3. Wyjdź z programu ");
+            Console.WriteLine("Wybierz opcję, wpisując odpowiadający jej numer: \n 1. Stwórz nowy graf \n 2. Załaduj przykładowy graf \n 3. Instrukcja \n 4. Wyjdź z programu ");
             var s = Convert.ToInt32(Console.ReadKey(true).KeyChar)-48;
             var _continue = true;
             while (_continue)
@@ -77,6 +81,10 @@ namespace MyApp
                         Example();
                         break;
                     case 3:
+                        Console.Clear();
+                        Manual();
+                        break;
+                    case 4:
                         Environment.Exit(0);
                         break;
                     default:
@@ -118,47 +126,77 @@ namespace MyApp
 
         public static void NewGraph()
         {
-            var successorsList = new List<List<int>>();
-            Console.Write("Podaj liczbę wierzchołków: ");
-            int size = Convert.ToInt32(Console.ReadLine());
-
-            for (int i = 0; i < size; i++)
+            try
             {
-                Console.Write("Podaj numery następców wierzchołka " + i + " (oddzielone spacją): ");
-                String input = Console.ReadLine();
-                while(input.Contains(Convert.ToString(i)))
+                var successorsList = new List<List<int>>();
+                Console.Write("Podaj liczbę wierzchołków: ");
+                int size = Convert.ToInt32(Console.ReadLine());
+
+                for (int i = 0; i < size; i++)
                 {
-                    Console.WriteLine("Nie można tworzyć pętli, podaj wierzchołki ponownie.");
                     Console.Write("Podaj numery następców wierzchołka " + i + " (oddzielone spacją): ");
-                    input = Console.ReadLine();
-                }
-                
-                var neighbours = input == "" ? new List<int>() : input.Split(" ").Select(x => Convert.ToInt32(x)).ToList();
-                var didExceedLimit = neighbours.Where(x => x >= size).Count();
-                while(didExceedLimit > 0)
-                {
-                    Console.WriteLine("Podano nie istniejący wierzchołek. Spróbuj ponownie.");
-                    input = Console.ReadLine();
-                    neighbours = input.Split(" ").Select(x => Convert.ToInt32(x)).ToList();
-                    didExceedLimit = neighbours.Where(x => x >= size).Count();
+                    String input = Console.ReadLine();
+                    while (input.Contains(Convert.ToString(i)))
+                    {
+                        Console.WriteLine("Nie można tworzyć pętli, podaj wierzchołki ponownie.");
+                        Console.Write("Podaj numery następców wierzchołka " + i + " (oddzielone spacją): ");
+                        input = Console.ReadLine();
+                    }
+
+                    var neighbours = input == "" ? new List<int>() : input.Split(" ").Select(x => Convert.ToInt32(x)).ToList();
+                    var didExceedLimit = neighbours.Where(x => x >= size).Count();
+                    while (didExceedLimit > 0)
+                    {
+                        Console.WriteLine("Podano nie istniejący wierzchołek. Spróbuj ponownie.");
+                        input = Console.ReadLine();
+                        neighbours = input == "" ? new List<int>() : input.Split(" ").Select(x => Convert.ToInt32(x)).ToList();
+                        didExceedLimit = neighbours.Where(x => x >= size).Count();
+                    }
+
+                    successorsList.Add(neighbours);
                 }
 
-                successorsList.Add(neighbours);
+                ShortestCycle(successorsList);
+                Console.WriteLine("\nNaciśnij dowolny przycisk, aby wrócić do menu...");
+                Console.ReadKey();
+                Console.Clear();
+                MainMenu();
             }
+            catch(Exception e)
+            {
+                Console.Clear();
+                Console.WriteLine("Błędne dane. Spróbuj jeszcze raz.");
+                Console.WriteLine("\nNaciśnij dowolny przycisk...");
+                Console.ReadKey();
+                Console.Clear();
+                NewGraph();
+            }
+        }
 
-            ShortestCycle(successorsList);
+        public static void Manual()
+        {
+            Console.WriteLine("Instrukcja obsługi");
+            Console.WriteLine("Tworzenie grafu");
+            Console.WriteLine(" - Podajemy ilość wierzchołków w grafie");
+            Console.WriteLine(" - Podajemy dla każdego wierzchołka indeksy wierzchołków z którymi chcemy stworzyć krawędź");
+            Console.WriteLine(" - Sąsiadów wierzchołka podajemy kolejno po spacji");
+            Console.WriteLine("Uwagi");
+            Console.WriteLine(" - Nie można tworzyć pętli (krawędź sama z sobą)");
+            Console.WriteLine(" - Wierzchołki indeksujemy od zera");
+            Console.WriteLine(" - Ostatni wierzchołek ma zawsze indeks (ilość wierzchołków - 1)");
+            Console.WriteLine(" - Jeżeli wierzchołek nie ma krawędzi nic nie podajemy wciskamy ENTER");
             Console.WriteLine("\nNaciśnij dowolny przycisk, aby wrócić do menu...");
             Console.ReadKey();
             Console.Clear();
             MainMenu();
-
         }
+
         static void Main(string[] args)
         {
             ConsoleHelper.SetCurrentFont("Consolas", 25);
             Console.WriteLine("Witaj w programie znajdowania najkrótszego cyklu w grafie skierowanym!");
             MainMenu();
-            Console.ReadKey();
+            Console.ReadKey();    
         }
     }
 }
