@@ -59,6 +59,8 @@ namespace MyApp
                 sb.Append("->");
                 sb.Append(cycle[i]);
             }
+            sb.Append("->");
+            sb.Append(cycle[0]);
             return sb.ToString();
         }
         
