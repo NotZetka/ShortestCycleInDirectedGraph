@@ -65,10 +65,10 @@ namespace MyApp
         public static void MainMenu()
         {
             Console.WriteLine("Wybierz opcję, wpisując odpowiadający jej numer: \n 1. Stwórz nowy graf \n 2. Załaduj przykładowy graf \n 3. Instrukcja \n 4. Wyjdź z programu ");
-            var s = Convert.ToInt32(Console.ReadKey(true).KeyChar)-48;
             var _continue = true;
             while (_continue)
             {
+                var s = Convert.ToInt32(Console.ReadKey(true).KeyChar) - 48;
                 _continue = false;
                 switch (s)
                 {
